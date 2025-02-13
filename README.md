@@ -67,3 +67,7 @@
 ### Notification:
 - The Notification Service publishes messages to RabbitMQ for real-time updates.
 - If an email is required, it uses the Google SMTP server.
+
+## Dockerization
+
+Each microservice (Auction, Item, User, Admin, Notification) has its own `Dockerfile`, allowing for containerized deployment and scaling. To build and run the services in isolated containers, follow the instructions within each service's directory.

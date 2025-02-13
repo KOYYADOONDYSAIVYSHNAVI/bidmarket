@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+service AuctionService {/*
+    Allow listing of items for bidding
+    Start the auction when the current time matches the start time defined by the user
+     */
+    rpc CreateAuction (CreateAuctionRequest) returns (CreateAuctionResponse);
+    rpc UpdateAuction (UpdateAuctionRequest) returns (UpdateAuctionResponse);
+    rpc StartAuction (StartAuctionRequest) returns (StartAuctionResponse);
+    /*
+    Remove auction once bidding is complete and user checkouts out
+     */
+    rpc StopAuction (StopAuctionRequest) returns (StopAuctionResponse);
+    /*
+        Allow bid to be placed, and increment bid amount as users enter new bids
+    Allow multiple bids to be placed at once by different users
+    Bid on an item, and update that bid if another user outbids that user
+     */
+    rpc PlaceBid (PlaceBidRequest) returns (PlaceBidResponse);
+
+    rpc GetAuctions (GetAuctionRequest) returns (GetAuctionResponse);
+
+    rpc BuyItemNow (BuyItemNowRequest) returns (BuyItemNowResponse);
+}
+
+message Bid {string user_id = 1;
+    float bid_amount = 2;
+    string bid_time = 3;}
+
+message Auction {string _id = 1;
+    float starting_price = 2;
+    string starting_time = 3; // ISO 8601 format, timezone must be UTC, example: 2024-11-25T22:04:47Z.
+    string ending_time = 4; // ISO 8601 format, timezone must be UTC, example: 2024-11-25T22:04:47Z.
+    string seller_id = 5;
+    string item_id = 6;
+    bool active = 7;
+    float current_price = 8;
+    repeated Bid bids = 9;
+    optional float buy_now_price = 10;}
+
+message CreateAuctionRequest {float starting_price = 1;
+    string starting_time = 2; // ISO 8601 format, timezone must be UTC, example: 2024-11-25T22:04:47Z.
+    string ending_time = 3; // ISO 8601 format, timezone must be UTC, example: 2024-11-25T22:04:47Z.
+    string seller_id = 4;
+    string item_id = 5;
+    optional float buy_now_price = 6;}
+
+message CreateAuctionResponse {bool success = 1;
+    string auction_id = 2;
+    string message = 3;}
+
+message UpdateAuctionRequest {string auction_id = 1;
+    float starting_price = 2;
+    string starting_time = 3; // ISO 8601 format, timezone must be UTC, example: 2024-11-25T22:04:47Z.
+    string ending_time = 4; // ISO 8601 format, timezone must be UTC, example: 2024-11-25T22:04:47Z.
+    string seller_id = 5;
+    string item_id = 6;
+    optional float buy_now_price = 7;}
+
+
+message UpdateAuctionResponse {bool success = 1;
+    uint32 modified_count = 2;
+    string message = 3;}
+
+message StartAuctionRequest {string auction_id = 1;}
+
+message StartAuctionResponse {bool success = 1;
+    string auction_id = 2;
+    string message = 3;}
+
+message StopAuctionRequest {string auction_id = 1;}
+
+message StopAuctionResponse {bool success = 1;
+    string auction_id = 2;
+    string message = 3;}
+
+message PlaceBidRequest {string auction_id = 1;
+    string user_id = 2;
+    float bid_amount = 3;}
+
+message PlaceBidResponse {bool success = 1;
+    string auction_id = 2;
+    string message = 3;}
+
+message GetAuctionRequest {string query = 1;}// mongodb query
+
+message GetAuctionResponse {bool success = 1;
+    repeated Auction auctions = 2;
+    string message = 3;}
+
+message BuyItemNowRequest {string auction_id = 1;
+    string user_id = 2;}
+
+message BuyItemNowResponse {bool success = 1;
+    string auction_id = 2;
+    string message = 3;}

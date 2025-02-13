@@ -1,0 +1,25 @@
+services:
+  notification_service:
+    build:
+      context: .
+    container_name: notification_service
+    ports:
+      - "5000:5000"
+    environment:
+      RABBITMQ_URI: "amqp://guest:guest@rabbitmq:5672"
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"  # RabbitMQ management interface
+      - "5672:5672"    # RabbitMQ AMQP protocol
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+networks:
+  default:
+    driver: bridge

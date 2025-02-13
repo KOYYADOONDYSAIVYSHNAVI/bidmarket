@@ -1,0 +1,3 @@
+MONGO_TEST_DB="auction_site_test"
+ITEM_COLLECTION="items"
+ITEM_SERVICE_PORT=5000

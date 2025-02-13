@@ -1,0 +1,5 @@
+MONGO_TEST_DB="auction_site_test"
+AUCTIONS_COLLECTION="auctions"
+BIDS_COLLECTION="bids"
+RABBITMQ_URI="amqp://guest@localhost:5672"
+AUCTION_SERVICE_PORT=50051

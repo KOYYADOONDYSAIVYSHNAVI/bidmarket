@@ -1,0 +1,21 @@
+services:
+  rpc:
+    build: .
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+      - USER_SERVICE_ADDRESS=http://user-service-nginx
+      - ITEM_SERVICE_ADDRESS=http://item-service-nginx
+    ports:
+      - "50010:50051"
+    networks:
+        - default
+        - user_external
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27011:27017
+
+networks:
+  user_external:
+    external: true

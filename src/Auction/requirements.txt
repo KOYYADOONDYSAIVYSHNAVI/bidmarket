@@ -1,0 +1,7 @@
+celery
+pytest
+pymongo
+mongomock
+grpcio
+grpcio-tools
+requests
